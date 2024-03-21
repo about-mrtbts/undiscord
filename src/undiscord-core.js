@@ -44,7 +44,7 @@ class UndiscordCore {
     offset: 0,
     iterations: 0,
 
-    _seachResponse: null,
+    _searchResponse: null,
     _messagesToDelete: [],
     _skippedMessages: [],
   };
@@ -72,7 +72,7 @@ class UndiscordCore {
       offset: 0,
       iterations: 0,
 
-      _seachResponse: null,
+      _searchResponse: null,
       _messagesToDelete: [],
       _skippedMessages: [],
     };
@@ -140,7 +140,7 @@ class UndiscordCore {
 
       log.verb(
         `Grand total: ${this.state.grandTotal}`,
-        `(Messages in current page: ${this.state._seachResponse.messages.length}`,
+        `(Messages in current page: ${this.state._searchResponse.messages.length}`,
         `To be deleted: ${this.state._messagesToDelete.length}`,
         `Skipped: ${this.state._skippedMessages.length})`,
         `offset: ${this.state.offset}`
@@ -167,7 +167,7 @@ class UndiscordCore {
         const oldOffset = this.state.offset;
         this.state.offset += this.state._skippedMessages.length;
         log.verb('There\'s nothing we can delete on this page, checking next page...');
-        log.verb(`Skipped ${this.state._skippedMessages.length} out of ${this.state._seachResponse.messages.length} in this page.`, `(Offset was ${oldOffset}, ajusted to ${this.state.offset})`);
+        log.verb(`Skipped ${this.state._skippedMessages.length} out of ${this.state._searchResponse.messages.length} in this page.`, `(Offset was ${oldOffset}, ajusted to ${this.state.offset})`);
       }
       else {
         log.verb('Ended because API returned an empty page.');
@@ -292,13 +292,13 @@ class UndiscordCore {
       }
     }
     const data = await resp.json();
-    this.state._seachResponse = data;
+    this.state._searchResponse = data;
     console.log(PREFIX, 'search', data);
     return data;
   }
 
   async filterResponse() {
-    const data = this.state._seachResponse;
+    const data = this.state._searchResponse;
 
     // the search total will decrease as we delete stuff
     const total = data.total_results;
